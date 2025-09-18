@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "../include/sieve.h"
+#include "../include/validator.h"
 
 
 
@@ -10,25 +11,20 @@ int main(int argc, const char* argv[])
 {
     int quantity = 0, max = 0;
     printf("Input number of requests: ");
-    scanf("%d", &quantity);
+    number_check(&quantity);
 
     int* const requests = malloc(quantity * sizeof(int));
     if (requests == NULL)
     {
-        printf("Something went wrong...\nIt's impossible to allocate memory...");
+        printf("Something went wrong...\nIt's impossible to allocate memory for requests...\n");
         return 1;
     }
 
     for (unsigned i = 0; i < quantity; ++i)
     {
         printf("%d: ", i + 1);
-        scanf("%d", requests + i);
-        if (*(requests + i) < 1 || *(requests + i) > 1000)
-        {
-            printf("Invalid data format. Default: 1\n");
-            printf("Hint: Your number must be positive and within a thousand.\n");
-            *(requests + i) = 1;
-        }
+        number_check(requests + i);
+
         if(*(requests + i) > max)
         {
             max = *(requests + i);
@@ -40,6 +36,7 @@ int main(int argc, const char* argv[])
     if (sieve == NULL)
     {
         printf("Something went wrong...\n");
+        free(requests);
         return 1;
     }
 

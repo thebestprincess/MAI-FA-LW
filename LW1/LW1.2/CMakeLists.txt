@@ -8,6 +8,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=maybe-uninitialized")
 
 set(LIB_SOURCES
     src/sieve.c
+    src/validator.c
 )
 
 add_library(${PROJECT_NAME}_lib STATIC ${LIB_SOURCES})
