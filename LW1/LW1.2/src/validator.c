@@ -1,6 +1,12 @@
 #include "../include/validator.h"
-#include <stdio.h>
 
+int is_number(const char* str)
+{
+    while (*str) {
+        if (isdigit(*str++) == 0) return 0;
+    }
+    return 1;
+}
 
 int number_check(int* number)
 {
@@ -8,7 +14,7 @@ int number_check(int* number)
     char buff[buff_size];
 
     fgets(buff, buff_size, stdin);
-    if (sscanf(buff, "%d", number) == 1 && *number > 0 && *number <= 1000)
+    if (sscanf(buff, "%d", number) == 1 && *number > 0 && *number <= 1000 && is_number(buff))
     {
         return 1;
     }
