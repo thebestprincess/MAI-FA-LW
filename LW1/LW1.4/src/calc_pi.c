@@ -6,13 +6,14 @@ double lim_function_pi(const int n)
     return 4.0 * n * (n - 1.0) / ((2.0 * n - 1.0) * (2.0 * n - 1.0));
 }
 
+
 double calc_pi_lim(const double eps) 
 {
     double prev_value = 4.0;
     double value = prev_value * lim_function_pi(2);
     int n = 3;
 
-    while (fabs(value - prev_value) > eps) 
+    while (fabs(value - prev_value) >= eps) 
     {
         prev_value = value;
         value *= lim_function_pi(n);
@@ -31,9 +32,9 @@ double calc_pi_row(const double eps)
     double sign = 1.0;
     double row_element = sign / (2.0 * n - 1.0);
 
-    while (4.0 * fabs(row_element) > eps)
+    while (4.0 * fabs(row_element) >= eps)
     {
-        if (n == 1000000000)
+        if (n >= 1000000000)
         {
             break;
         }

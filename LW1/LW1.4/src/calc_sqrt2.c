@@ -1,11 +1,12 @@
 #include "../include/calc_sqrt2.h"
 
+
 double calc_sqrt2_lim(const double eps)
 {
     double prev_value = -0.5;
     double value = prev_value - prev_value * prev_value / 2 + 1;
     int n = 2;
-    while (fabs(value - prev_value) > eps)
+    while (fabs(value - prev_value) >= eps)
     {
         n++;
         prev_value = value;
@@ -16,7 +17,6 @@ double calc_sqrt2_lim(const double eps)
 }
 
 
-
 double calc_sqrt2_row(const double eps)
 {
     int k = 2;
@@ -24,16 +24,15 @@ double calc_sqrt2_row(const double eps)
     ++k;
     double value = prev_value * pow(2.0, pow(2.0, -k));
 
-    while (fabs(value - prev_value) > eps)
+    while (fabs(value - prev_value) >= eps)
     {
-        k++;
+        ++k;
         prev_value = value;
         value = prev_value * pow(2.0, pow(2.0, -k));
     }
     printf("The result of sqrt2 obtained via the \"Row\" function.\nn: %d\nsqrt2: %.20f\n", k, value);
     return value;
 }
-
 
 
 double calc_sqrt2_equation()

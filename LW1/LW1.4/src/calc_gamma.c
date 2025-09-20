@@ -1,5 +1,6 @@
 #include "../include/calc_gamma.h"
 
+
 double factorial(const int m)
 {
     double value = 1.0;
@@ -9,6 +10,7 @@ double factorial(const int m)
     }
     return value;
 }
+
 
 double gamma_lim_func(const int m)
 {
@@ -40,7 +42,6 @@ double calc_gamma_lim(const double eps)
 }
 
 
-
 double gamma_row_func(int k)
 {
     return 1.0 / pow(floor(sqrt(k)), 2) - 1.0 / k;
@@ -51,14 +52,13 @@ double calc_gamma_row(const double eps, const double pi)
     int k = 2;
     double value = (pi * pi) / (-6.0) + gamma_row_func(k++);
 
-    while (gamma_row_func(k) > eps || gamma_row_func(k - 1) > eps)
+    while (gamma_row_func(k) >= eps || gamma_row_func(k - 1) >= eps)
     {
         value += gamma_row_func(k++);
     }
     printf("The result of gamma obtained via the \"Row\" function.\nn: %d\ngamma: %.20f\n", k, value);
     return value;
 }
-
 
 
 int* sieve_func(const int t)
