@@ -1,0 +1,28 @@
+#include "../include/validator.h"
+
+int is_number(const char* str)
+{
+    while (*str != '\n') {
+        if (isdigit(*str++) == 0) return 0;
+    }
+    return 1;
+}
+
+int number_check(int* number)
+{
+    const int buff_size = 20;
+    char buff[buff_size];
+
+    fgets(buff, buff_size, stdin);
+    if (sscanf(buff, "%d", number) == 1 && *number > 0 && *number <= 10 && is_number(buff))
+    {
+        return 1;
+    }
+    else 
+    {
+        *number = 5;
+        printf("Invalid data format. Default: 5\n");
+        printf("Hint: Your number must be positive and within a ten.\n");
+        return 0;
+    }
+}
