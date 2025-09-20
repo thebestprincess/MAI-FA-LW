@@ -2,7 +2,7 @@
 
 int is_number(const char* str)
 {
-    while (*str) {
+    while (*str != '\n') {
         if (isdigit(*str++) == 0) return 0;
     }
     return 1;
