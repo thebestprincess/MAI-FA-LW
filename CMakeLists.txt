@@ -3,4 +3,7 @@ project(all_LWs)
 
 add_subdirectory(LW1/LW1.1)
 add_subdirectory(LW1/LW1.2)
+add_subdirectory(LW1/LW1.3)
+add_subdirectory(LW1/LW1.4)
+
 
