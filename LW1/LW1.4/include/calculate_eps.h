@@ -1,3 +1,3 @@
 #pragma once
 
-double calculate_epsilon(const int);
+long double calculate_epsilon(const int);

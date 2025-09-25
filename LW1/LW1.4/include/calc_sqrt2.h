@@ -1,8 +1,5 @@
 #pragma once
 
-#include <math.h>
-#include <stdio.h>
-
-double calc_sqrt2_lim(const double eps);
-double calc_sqrt2_row(const double eps);
-double calc_sqrt2_equation();
+long double calc_sqrt2_lim(const long double eps);
+long double calc_sqrt2_row(const long double eps);
+long double calc_sqrt2_equation(const long double eps);

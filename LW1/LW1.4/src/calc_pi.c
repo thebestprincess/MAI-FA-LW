@@ -1,60 +1,67 @@
 #include "../include/calc_pi.h"
 
+#include <math.h>
+#include <stdio.h>
 
-double lim_function_pi(const int n) 
+
+long double lim_function_pi(const int n) 
 {
+    // f(n + 1) / f(n)
     return 4.0 * n * (n - 1.0) / ((2.0 * n - 1.0) * (2.0 * n - 1.0));
 }
 
 
-double calc_pi_lim(const double eps) 
+long double calc_pi_lim(const long double eps) 
 {
-    double prev_value = 4.0;
-    double value = prev_value * lim_function_pi(2);
-    int n = 3;
+    int n = 2;
+    long double prev_value = 4.0;
+    long double value = prev_value * lim_function_pi(n);
 
-    while (fabs(value - prev_value) >= eps) 
+    while (fabsl(value - prev_value) >= eps) 
     {
+        ++n;
         prev_value = value;
         value *= lim_function_pi(n);
-        ++n;
     }
 
-    printf("The result of pi obtained via the \"Limit\" function.\nn: %d\npi: %.20f\n", n, value);
+    printf("The result of pi obtained via the \"Limit\" function.\nn: %d\npi: %.20Lf\n", n, value);
     return value;
 }
 
 
-double calc_pi_row(const double eps)
+long double calc_pi_row(const long double eps)
 {
-    int n = 1;
-    double row_value = 0.0;
-    double sign = 1.0;
-    double row_element = sign / (2.0 * n - 1.0);
+    long int n = 1;
+    long double row_value = 1.0;
+    long double row_element = 1.0;
 
-    while (4.0 * fabs(row_element) >= eps)
+    while (4.0 * fabsl(row_element) >= eps)
     {
         if (n >= 1000000000)
         {
             break;
         }
-        row_value += row_element;
         ++n;
-        sign = -sign;
-        row_element = sign / (2.0 * n - 1.0);
+        row_element = ((n % 2 == 0) ? -1.0 : 1.0) / (2.0 * n - 1.0);
+        row_value += row_element;
     }
     row_value *= 4.0;
 
-    printf("The result of pi obtained via the \"Row\" function.\nn: %d\npi: %.20f\n", n, row_value);
+    printf("The result of pi obtained via the \"Row\" function.\nn: %ld\npi: %.20Lf\n", n, row_value);
     return row_value;
 }
 
 
-double calc_pi_equation()
+long double calc_pi_equation(const long double eps)
 {   
-    // cos x = -1
-    // x = arccos -1
-    double pi = acos(-1);
-    printf("The result of pi obtained via the \"Equation\" function.\npi: %.20f\n", pi);
-    return pi;
+    // Newton method based of function derivative
+    long double approximated_value = 3.0;
+
+    while (cosl(approximated_value) + 1.0 >= eps)
+    {
+        approximated_value -= (cosl(approximated_value) + 1.0) / (-sinl(approximated_value));
+    }
+
+    printf("The result of pi obtained via the \"Equation\" function.\npi: %.20Lf\n", approximated_value);
+    return approximated_value;
 }

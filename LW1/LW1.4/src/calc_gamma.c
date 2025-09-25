@@ -1,62 +1,77 @@
 #include "../include/calc_gamma.h"
 
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 
-double factorial(const int m)
+
+long double factorial(const int m)
 {
-    double value = 1.0;
+    long double value = 1.0;
+
     for (int i = 2; i <= m; ++i)
     {
-        value *= i;
+        value *= (long double)i;
     }
+
     return value;
 }
 
 
-double gamma_lim_func(const int m)
+long double gamma_lim_func(const int m)
 {
-    double combinations, sum = 0;
     int sign = -1;
+    long double combinations;
+    long double sum = 0;
+    
     for (int k = 1; k <= m; ++k)
     {
-        combinations = (double)factorial(m) / (double)((factorial(k)) * factorial(m - k));
-        sum += combinations * sign / k * log(factorial(k));
+        combinations = factorial(m) / ((factorial(k)) * factorial(m - k));
+        sum += combinations * sign / k * logl(factorial(k));
         sign *= -1;
     }
+
     return sum;
 }
 
 
-double calc_gamma_lim(const double eps)
+long double calc_gamma_lim(const long double eps)
 {
     int m = 1;
-    double prev_value = gamma_lim_func(m++);
-    double value = gamma_lim_func(m++);
-    while (fabs(value - prev_value) >= eps)
+    long double prev_value = gamma_lim_func(m++);
+    long double value = gamma_lim_func(m++);
+
+    while (fabsl(value - prev_value) >= eps && m != 20)
     {
         prev_value = value;
         value = gamma_lim_func(m++);
-        if (m > 40) break;
     }
-    printf("The result of gamma obtained via the \"Limit\" function.\nn: %d\ngamma: %.20f\n", m, value);
+
+    printf("The result of gamma obtained via the \"Limit\" function.\nn: %d\ngamma: %.20Lf\n", m, value);
     return value;
 }
 
 
-double gamma_row_func(int k)
+long double gamma_row_func(int k)
 {
-    return 1.0 / pow(floor(sqrt(k)), 2) - 1.0 / k;
+    return 1.0 / (floorl(sqrtl(k)) * floorl(sqrtl(k))) - 1.0 / k;
 }
 
-double calc_gamma_row(const double eps, const double pi)
+long double calc_gamma_row(const long double eps, const long double pi)
 {
     int k = 2;
-    double value = (pi * pi) / (-6.0) + gamma_row_func(k++);
+    long double prev_row_elem;
+    long double row_elem = 0.5;
+    long double value = (pi * pi) / (-6.0) + row_elem;
 
-    while (gamma_row_func(k) >= eps || gamma_row_func(k - 1) >= eps)
+    while (row_elem >= eps || prev_row_elem >= eps)
     {
-        value += gamma_row_func(k++);
+        prev_row_elem = row_elem;
+        row_elem = gamma_row_func(++k);
+        value += row_elem;
     }
-    printf("The result of gamma obtained via the \"Row\" function.\nn: %d\ngamma: %.20f\n", k, value);
+
+    printf("The result of gamma obtained via the \"Row\" function.\nn: %d\ngamma: %.20Lf\n", k, value);
     return value;
 }
 
@@ -94,10 +109,11 @@ int* sieve_func(const int t)
 }
 
 
-double calc_gamma_product(const int* const sieve, const int t)
+long double calc_gamma_product(const int* const sieve, const int t)
 {
-    double log_t = log(t);
-    double product = 1.0; 
+    long double log_t = logl(t);
+    long double product = 1.0; 
+
     for (int p = 2; p <= t; ++p)
     {
         if (sieve[p] != 0)
@@ -105,41 +121,45 @@ double calc_gamma_product(const int* const sieve, const int t)
             product *= (p - 1.0) / p;
         }
     }
-    return log_t * (double)product;
+
+    return log_t * product;
 }
 
 
-double calc_gamma_equation(const double eps)
+long double calc_gamma_equation(const long double eps)
 {   
-    double gamma = 0.0;
-    double prev_value = 0.0, value = 0.0;
-    int max_t = 100000;
+    long double gamma = 0.0;
+    long double prev_value = 0.0, value = 0.0;
+    int max_t = (int)2e6;
 
-    int* sieve = sieve_func(max_t);
+    int* sieve = sieve_func((int)2e6);
     if (sieve == NULL)
     {
         return 0.0;
     }
 
-    int t = 3;
-    for (; t < max_t; ++t)
-    {   
-        value = calc_gamma_product(sieve, t);
-        if (fabs( value - prev_value) < eps)
+    long double lhs  = 0;
+    long double rhs = 1.0;
+    long double mid;
+
+    long double function_in_limit = calc_gamma_product(sieve, (int)2e6);
+
+    while (fabsl(rhs - lhs) >= eps)
+    {
+        mid = (lhs + rhs) / 2.0;
+
+        if (expl(-mid) > function_in_limit)
         {
-            gamma = -log(value);
-            break;
+            lhs = mid;
         }
-
-        prev_value = value;
-
-        if (t == max_t - 1)
+        else
         {
-            gamma = -log(value);
+            rhs = mid;
         }
     }
 
     free(sieve);
-    printf("The result of gamma obtained via the \"Equation\" function.\nt: %d\ngamma: %.20f\n", t, gamma);
-    return gamma;
+    printf("The result of gamma obtained via the \"Equation\" function.\ngamma: %.20Lf\n", mid);
+
+    return mid;
 }
