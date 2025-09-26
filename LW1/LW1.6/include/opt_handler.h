@@ -1,3 +1,3 @@
 #pragma once
 
-double get_precision(const int argc,const char** argv);
+long double get_precision(const int argc,const char** argv);

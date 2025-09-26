@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-double get_precision(const int argc,const char** argv)
+long double get_precision(const int argc,const char** argv)
 {
     double eps = 0.0001;
 
@@ -26,7 +26,7 @@ double get_precision(const int argc,const char** argv)
     
     if (eps <= 0) {
         printf("Error: precision must be positive\n");
-        printf("The default value is set. Default: 0.0001\n\n");
+        printf("The default value is set. Default: 0.0001\n");
         return 0.0001;
     }
     return eps;

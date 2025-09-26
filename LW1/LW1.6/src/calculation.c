@@ -4,104 +4,81 @@
 #include <stdio.h>
 
 
-double trapezoid_method(double precision, double x1, double x2, double (*func) (double))
+long double trapezoid_method(long double (*math_func) (long double), long long steps)
 {
-    return (func(x1) + func(x2)) / 2.0 * precision;
-}
+    long double delta = 1.0 / steps; 
+    long double x;
+    long double sum = (math_func(0) + math_func(1)) / 2.0;
 
-
-double first_function(double x)
-{
-    return log(1 + x) / x;
-}
-
-
-void first(double precision)
-{
-    double x = precision;
-    double sum = 0.0;
-
-    while (x <= 1)
+    for (long long i = 1; i < steps; ++i)
     {
-        sum += trapezoid_method(precision, x, x + precision, first_function);
-        x += precision;
+        x = i * delta;
+        sum += math_func(x);
     }
 
-    printf("Result of the first integral is: %.10f\n", sum);
+    return delta * sum;
 }
 
 
-double second_function(double x)
+long double first_function(long double x)
 {
-    return exp(-(pow(x, 2) / 2.0));
-}
-
-
-void second(double precision)
-{
-    double x = precision;
-    double sum = 0.0;
-
-    while (x <= 1)
+    if (x == 0)
     {
-        sum += trapezoid_method(precision, x, x + precision, second_function);
-        x += precision;
+        return 1;
     }
 
-    printf("Result of the second integral is: %.10f\n", sum);
+    return logl(1 + x) / x;
 }
 
 
-double third_function(double x)
+long double second_function(long double x)
 {
-    return log(1.0 / (1.0 - x));
+    return expl(-(pow(x, 2) / 2.0));
 }
 
 
-void third(double precision)
+long double third_function(long double x)
 {
-    double x = precision;
-    double sum = 0.0;
-
-    while (x < 1 - precision)
+    if (x >= 0.999999999999999)
     {
-        sum += trapezoid_method(precision, x, x + precision, third_function);
-        x += precision;
+        x = 0.999999999999999;
     }
 
-    printf("Result of the third integral is: %.10f\n", sum);
+    return logl(1.0 / (1.0 - x));
 }
 
 
-double fourth_function(double x)
+long double fourth_function(long double x)
 {
     return pow(x, x);
 }
 
 
-void fourth(double precision)
+long double calc_integral(long double eps, long double (*math_func) (long double))
 {
-    double x = precision;
-    double sum = 0.0;
+    long long steps = 2;
+    long double first = trapezoid_method(math_func, steps);
 
-    while (x < 1)
+    steps *= 2;
+    long double second = trapezoid_method(math_func, steps);
+
+    while (fabsl(first - second) / 3.0 >= eps && steps <= 1000000)
     {
-        sum += trapezoid_method(precision, x, x + precision, fourth_function);
-        x += precision;
+        first = second;
+        steps *= 2;
+        second = trapezoid_method(math_func, steps);
     }
 
-    printf("Result of the third integral is: %.10f\n", sum);
+    return second;
 }
 
 
-
-
-void all_calculations(double precision)
+void all_calculations(long double precision)
 {
-    first(precision);
-    second(precision);
-    third(precision);
-    fourth(precision);
+    printf("Result of the first integral is: %.10Lf\n", calc_integral(precision, first_function));
+    printf("Result of the second integral is: %.10Lf\n", calc_integral(precision, second_function));
+    printf("Result of the third integral is: %.10Lf\n", calc_integral(precision, third_function));
+    printf("Result of the fourth integral is: %.10Lf\n", calc_integral(precision, fourth_function));
 }
 
 

@@ -1,3 +1,3 @@
 #pragma once
 
-void all_calculations(double precision);
+void all_calculations(long double precision);
