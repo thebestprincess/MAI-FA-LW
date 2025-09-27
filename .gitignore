@@ -2,6 +2,7 @@ build/*
 .vscode/*
 .cache
 LW1/LW1.5/txt
+LW1/LW1.7/txt
 
 .DS_Store
 # Prerequisites
