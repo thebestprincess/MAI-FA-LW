@@ -62,110 +62,102 @@ void value_processing(int argc, const char** argv)
         }
         else if (opt == OPT_Q) 
         {
-            if (i + 4 < argc)
-            {
-                double eps, num1, num2, num3;
-                char* endptr;
-                if (check_real_number(argv[i + 1]) 
-                    && check_real_number(argv[i + 2]) 
-                    && check_real_number(argv[i + 3]) 
-                    && check_real_number(argv[i + 4]))
-                {
-                    eps = strtod(argv[i + 1], &endptr);
-                    if (*endptr != '\0') {
-                        continue;
-                    }
-                    num1 = strtod(argv[i + 2], &endptr);
-                    if (*endptr != '\0') {
-                        continue;
-                    }
-                    num2 = strtod(argv[i + 3], &endptr);
-                    if (*endptr != '\0') {
-                        continue;
-                    }
-                    num3 = strtod(argv[i + 4], &endptr);
-                    if (*endptr != '\0') {
-                        continue;
-                    }
-                    handle_q(eps, num1, num2, num3);
-                }
-                else 
-                {
-                    handle_message("Invalid value(s) for the [-q or /q] option");
-                    continue;
-                }
-                
-            }
-            else 
+            if (i + 4 >= argc)
             {
                 handle_message("Not enough values for [-q or /q] option");
                 break;
             }
+
+            if (!(check_real_number(argv[i + 1]) 
+                && check_real_number(argv[i + 2]) 
+                && check_real_number(argv[i + 3]) 
+                && check_real_number(argv[i + 4])))
+            {
+                handle_message("Invalid value(s) for the [-q or /q] option");
+                continue;
+            }
+
+            double eps, num1, num2, num3;
+            char* endptr;
+
+            eps = strtod(argv[i + 1], &endptr);
+            if (*endptr != '\0') {
+                continue;
+            }
+            num1 = strtod(argv[i + 2], &endptr);
+            if (*endptr != '\0') {
+                continue;
+            }
+            num2 = strtod(argv[i + 3], &endptr);
+            if (*endptr != '\0') {
+                continue;
+            }
+            num3 = strtod(argv[i + 4], &endptr);
+            if (*endptr != '\0') {
+                continue;
+            }
+            handle_q(eps, num1, num2, num3);                
         }
         else if (opt == OPT_M)
         {
-            if (i + 2 < argc)
-            {
-                int num1, num2;
-                if (check_integer(argv[i + 1]) && check_integer(argv[i + 2]))
-                {
-                    num1 = atoi(argv[i + 1]);
-                    num2 = atoi(argv[i + 2]);
-                    handle_m(num1, num2);
-                }
-                else 
-                {
-                    handle_message("Invalid value(s) ​​for the [-m or /m] option");
-                    continue;
-                }
-
-            }
-            else 
+            if (i + 2 >= argc)
             {
                 handle_message("Not enough values for [-m or /m] option");
                 break;
             }
+
+            if (!(check_integer(argv[i + 1]) && check_integer(argv[i + 2])))
+            {
+                handle_message("Invalid value(s) ​​for the [-m or /m] option");
+                continue;
+            }
+
+            int num1, num2;
+
+            num1 = atoi(argv[i + 1]);
+            num2 = atoi(argv[i + 2]);
+            handle_m(num1, num2);
         }
         else if (opt == OPT_T)
         {
-            if (i + 4 < argc)
-            {
-                double eps, num1, num2, num3;
-                char* endptr;
-                if (check_real_number(argv[i + 1]) 
-                    && check_real_number(argv[i + 2]) 
-                    && check_real_number(argv[i + 3]) 
-                    && check_real_number(argv[i + 4]))
-                {
-                    eps = strtod(argv[i + 1], &endptr);
-                    if (*endptr != '\0') {
-                        continue;
-                    }
-                    num1 = strtod(argv[i + 2], &endptr);
-                    if (*endptr != '\0') {
-                        continue;
-                    }
-                    num2 = strtod(argv[i + 3], &endptr);
-                    if (*endptr != '\0') {
-                        continue;
-                    }
-                    num3 = strtod(argv[i + 4], &endptr);
-                    if (*endptr != '\0') {
-                        continue;
-                    }
-                    handle_t(eps, num1, num2, num3);
-                }
-                else 
-                {
-                    handle_message("Invalid value(s) ​​for the [-t or /t] option");
-                    continue;
-                }
-            }
-            else 
+            if (i + 4 >= argc)
             {
                 handle_message("Not enough values for [-t or /t] option");
                 break;
             }
+
+            if (!(check_real_number(argv[i + 1]) 
+                && check_real_number(argv[i + 2]) 
+                && check_real_number(argv[i + 3]) 
+                && check_real_number(argv[i + 4])))
+            {
+                handle_message("Invalid value(s) ​​for the [-t or /t] option");
+                continue;
+            }
+
+            double eps, num1, num2, num3;
+            char* endptr;
+
+            eps = strtod(argv[i + 1], &endptr);
+            if (*endptr != '\0') {
+                continue;
+            }
+
+            num1 = strtod(argv[i + 2], &endptr);
+            if (*endptr != '\0') {
+                continue;
+            }
+
+            num2 = strtod(argv[i + 3], &endptr);
+            if (*endptr != '\0') {
+                continue;
+            }
+
+            num3 = strtod(argv[i + 4], &endptr);
+            if (*endptr != '\0') {
+                continue;
+            }
+            handle_t(eps, num1, num2, num3);
         }
     }
     
@@ -191,7 +183,7 @@ void handle_m(int num1, int num2)
         return;
     }
 
-    if (num1 % 2 == 0)
+    if (num1 % num2 == 0)
     {
         printf("Result of flag [-m or /m]: first number IS a multiple of second\n");
     }
