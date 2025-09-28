@@ -8,5 +8,6 @@ add_subdirectory(LW1/LW1.4)
 add_subdirectory(LW1/LW1.5)
 add_subdirectory(LW1/LW1.6)
 add_subdirectory(LW1/LW1.7)
+add_subdirectory(LW1/LW1.8)
 
 
